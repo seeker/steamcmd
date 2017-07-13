@@ -18,6 +18,10 @@
 # limitations under the License.
 #
 
+apt_update 'update apt' do
+  action :periodic
+end
+
 package 'lib32gcc1'
 
 user node['steamcmd']['user'] do
