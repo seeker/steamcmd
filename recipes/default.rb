@@ -18,11 +18,19 @@
 # limitations under the License.
 #
 
+
+
+execute 'add 32 bit packages' do
+	command "dpkg --add-architecture i386"
+end
+
 apt_update 'update apt' do
   action :periodic
 end
 
-package 'lib32gcc1'
+package 'steamcmd' do
+	response_file 'steamcmd.seed'
+end
 
 user node['steamcmd']['user'] do
   action :create
@@ -42,24 +50,4 @@ directory node['steamcmd']['apps_dir'] do
   group node['steamcmd']['group']
   mode '0755'
   action :create
-end
-
-unless ::File.exists?("#{node['steamcmd']['steamcmd_dir']}/steamcmd.sh")
-
-  remote_file "/tmp/steamcmd_linux.tar.gz" do
-    source "http://media.steampowered.com/installer/steamcmd_linux.tar.gz"
-    owner node['steamcmd']['user']
-    group node['steamcmd']['group']
-    mode '0755'
-    action :create
-  end
-
-  execute 'steamcmd_linux.tar.gz' do
-    user node['steamcmd']['user']
-    group node['steamcmd']['group']
-    cwd node['steamcmd']['steamcmd_dir']
-    command "tar -xvzpf /tmp/steamcmd_linux.tar.gz && rm /tmp/steamcmd_linux.tar.gz"
-    timeout 1800
-  end
-
 end
