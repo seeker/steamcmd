@@ -22,7 +22,7 @@ package 'lib32gcc1'
 
 user node['steamcmd']['user'] do
   action :create
-  supports :manage_home => true
+  manage_home true
   home node['steamcmd']['home']
 end
 
