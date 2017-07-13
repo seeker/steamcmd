@@ -25,7 +25,7 @@ execute 'add 32 bit packages' do
 end
 
 apt_update 'update apt' do
-  action :periodic
+  action :update
 end
 
 package 'steamcmd' do
